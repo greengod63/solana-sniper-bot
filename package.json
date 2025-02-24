@@ -7,14 +7,18 @@
     "start": "ts-node index.ts",
     "build": "tsc",
     "clean": "tsc --build --clean",
-    "dev": "tsc && node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsc && node ./dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.7",
-    "ts-node": "^10.9.2",
+    "node-telegram-bot-api": "^0.66.0",
     "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "@types/node-telegram-bot-api": "^0.64.7",
+    "ts-node": "^10.9.2"
   }
 }
