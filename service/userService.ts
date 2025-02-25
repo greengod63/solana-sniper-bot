@@ -24,12 +24,12 @@ export async function createUser(userData: Partial<IUser>): Promise<IUser> {
     return await user.save();
 }
 
-export async function hasUser(userid: Number): Promise<Boolean> {
+export async function hasUser(userid: Number): Promise<IUser | null> {
     const user = await User.findOne({userid: userid});
     if(user){
-        return true;
+        return user;
     }
     else {
-        return false;
+        return null;
     }
 }
