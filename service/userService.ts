@@ -23,3 +23,13 @@ export async function createUser(userData: Partial<IUser>): Promise<IUser> {
     });
     return await user.save();
 }
+
+export async function hasUser(userid: Number): Promise<Boolean> {
+    const user = await User.findOne({userid: userid});
+    if(user){
+        return true;
+    }
+    else {
+        return false;
+    }
+}
