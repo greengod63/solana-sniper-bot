@@ -15,6 +15,7 @@
     "@solana/web3.js": "^1.98.0",
     "bs58": "^6.0.0",
     "dotenv": "^16.4.7",
+    "fs": "^0.0.1-security",
     "mongoose": "^8.10.1",
     "node-telegram-bot-api": "^0.66.0",
     "typescript": "^5.7.3"
