@@ -1,4 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
+import { connectDatabase } from "./config/db";
+import { createUser } from "./service/userService";
+
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -57,10 +60,23 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN!, {
 });
 
 const startBot = () => {
+  // Connect Database
+  connectDatabase();
+
   bot.setMyCommands(BotMenu);
 
   bot.onText(/^\/start$/, async (msg: TelegramBot.Message) => {
     console.log("🚀 input start cmd:");
+
+    // const chatId = msg.chat.id;
+    const user = msg.chat;
+    await createUser({
+      userid: user.id,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name
+    })
+
     const caption = "Welcome to lucky sniper bot!";
     await bot.sendMessage(msg.chat.id, caption, {
       parse_mode: "HTML",
