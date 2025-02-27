@@ -36,13 +36,13 @@ export function getIKSnipe({
   sl = null,
   snipe_amount = null,
 }: {
-  token?: string | null;
-  slippage?: Number;
-  snipe_fee?: Number;
-  snipe_tip?: Number;
-  tp?: Number | null;
-  sl?: Number | null;
-  snipe_amount?: Number | null;
+  token: string | null;
+  slippage: number;
+  snipe_fee: number;
+  snipe_tip: number;
+  tp: number | null;
+  sl: number | null;
+  snipe_amount: number | null;
 }): any {
   const IK_SNIPE = [
     [
