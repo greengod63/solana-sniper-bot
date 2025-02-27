@@ -39,6 +39,8 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN!, {
   filepath: false,
 });
 
+const userSnipeConfig = new Map();
+
 const startBot = () => {
   // Connect Database
   connectDatabase();
@@ -67,6 +69,19 @@ const startBot = () => {
       });
     }
 
+    // Snipe Config Init
+    let snipe_config:any = {
+      token: null,
+      slippage: 50,
+      snipe_fee: 0.005,
+      snipe_tip: 0.005,
+      tp: null,
+      sl: null,
+      snipe_amount: null,
+    };
+
+    userSnipeConfig.set(chatId, snipe_config);
+
     const image = fs.createReadStream("./public/sniper.jpg");
     const caption = `Welcome to <b>Lucky Sniper</b> Bot!✨\n⬇You can deposit SOL to your wallet and start sniping!🔍\n\n💰Your Wallet:\n<code>${user.public_key}</code>`;
     await bot.sendPhoto(msg.chat.id, image, {
@@ -79,38 +94,18 @@ const startBot = () => {
   });
 
   bot.onText(/^\/snipe/, async (msg: TelegramBot.Message) => {
-    const chatId = msg.chat.id;
-    let user;
-    // const existingUser = await hasUser(chatId);
-    // if (existingUser) {
-    //   console.log("User already exist: ", chatId);
-    //   user = existingUser;
-    //   const IK_SNIPE = getIKSnipe();
-    //   const image = fs.createReadStream("./public/sniper.jpg");
-    //   const caption = `Welcome to <b>Lucky Sniper</b> Bot!✨\n⬇You can deposit SOL to your wallet and start sniping!🔍\n\n💰Your Wallet:\n<code>${user.public_key}</code>`;
-    //   await bot.sendPhoto(msg.chat.id, image, {
-    //     parse_mode: "HTML",
-    //     caption: caption,
-    //     reply_markup: {
-    //       inline_keyboard: IK_SNIPE,
-    //     },
-    //   });
-    // }
-    // else{
-    //   await bot.sendMessage(chatId, "Please start the bot first using /start");
-    //   return;
-    // }
+
   });
 
   bot.on("message", (msg: TelegramBot.Message) => {
     console.log("message handler");
     // bot.sendMessage(msg.chat.id, "hhhhhhhh");
-    messageHandler(bot, msg);
+    messageHandler(bot, msg, userSnipeConfig);
   });
 
   bot.on("callback_query", async (cb_query: TelegramBot.CallbackQuery) => {
     console.log("callback_query handler");
-    callbackQueryHandler(bot, cb_query);
+    callbackQueryHandler(bot, cb_query, userSnipeConfig);
   });
 };
 

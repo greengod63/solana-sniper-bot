@@ -7,7 +7,8 @@ import { sendIKSnipe } from "./botAction";
 
 export async function callbackQueryHandler(
   bot: TelegramBot,
-  cb_query: TelegramBot.CallbackQuery
+  cb_query: TelegramBot.CallbackQuery,
+  userSnipeConfig: Map<number, any>
 ) {
   const cb_query_cmd = cb_query.data;
   const chatId = cb_query.message?.chat.id;
@@ -31,7 +32,10 @@ export async function callbackQueryHandler(
 
   switch (cb_query_cmd.split("-")[0]) {
     case "SNIPE": // Snipe Button
-      const IK_SNIPE = getIKSnipe({});
+      const snipe_config = userSnipeConfig.get(chatId);
+      console.log("Callback snipe_config: ", snipe_config);
+      
+      const IK_SNIPE = getIKSnipe(snipe_config);
       sendIKSnipe(bot, chatId, IK_SNIPE);
       break;
     case "BACK": //Back Button
