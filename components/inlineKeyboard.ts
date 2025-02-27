@@ -27,16 +27,23 @@ export const IK_START = [
 ];
 
 // Snipe Inline Keyboard
-export function getIKSnipe(
-  //   status: string = "init",
-  token: string | null = null,
-  slippage: Number = 50,
-  snipe_fee: Number = 0.005,
-  snipe_tip: Number = 0.005,
-  tp: Number | null = null,
-  sl: Number | null = null,
-  snipe_amount: Number | null = null
-): any {
+export function getIKSnipe({
+  token = null,
+  slippage = 50,
+  snipe_fee = 0.005,
+  snipe_tip = 0.005,
+  tp = null,
+  sl = null,
+  snipe_amount = null,
+}: {
+  token?: string | null;
+  slippage?: Number;
+  snipe_fee?: Number;
+  snipe_tip?: Number;
+  tp?: Number | null;
+  sl?: Number | null;
+  snipe_amount?: Number | null;
+}): any {
   const IK_SNIPE = [
     [
       {

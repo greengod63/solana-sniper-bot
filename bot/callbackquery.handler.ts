@@ -31,7 +31,7 @@ export async function callbackQueryHandler(
 
   switch (cb_query_cmd.split("-")[0]) {
     case "SNIPE": // Snipe Button
-      const IK_SNIPE = getIKSnipe();
+      const IK_SNIPE = getIKSnipe({});
       sendIKSnipe(bot, chatId, IK_SNIPE);
       break;
     case "BACK": //Back Button
