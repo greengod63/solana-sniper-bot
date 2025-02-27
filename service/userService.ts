@@ -1,5 +1,4 @@
 import User, { IUser } from "../module/user";
-import DynamicSwapConfig, { ISwapConfig } from "../module/swapConfig";
 import { Keypair } from "@solana/web3.js";
 import bs58 from "bs58";
 
