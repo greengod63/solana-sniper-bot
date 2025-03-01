@@ -69,7 +69,11 @@ export async function messageHandler(
           } else {
             await bot.deleteMessage(chatId, msg.message_id);
             await bot.deleteMessage(chatId, reply_message_id);
+
+            await bot.sendMessage(chatId, BotCaption.strInvalidInput);
           }
+          break;
+
       }
     } else {
       const isCA = await isValidSolanaAddress(msg.text);
