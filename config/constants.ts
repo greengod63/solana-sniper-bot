@@ -11,6 +11,7 @@ export enum BotCaption {
   SET_SLIPPAGE = `⚖ Slippage \n\n<i>💲 Enter Slippage in format "xx%"</i>`,
   SET_TakeProfit = `⚖ Take Profit \n\n<i>💲 Enter Take Profit in format "xx%"</i>`,
   SET_StopLoss = `⚖ Stop Loss \n\n<i>💲 Enter Stop Loss in format "xx%"</i>`,
+  strInvalidInput = `⚠️ Invalid Input ⚠️`,
   SET_PK = `🔑 Private KEY \n\n<i>💲 Enter Wallet Private KEY</i>`,
   SET_DES = `⚙ User Setting.\nYou can set any settings on here. You can set any settings on here.`,
   SWAP_FAILED = `⚠️ Swap Failed ⚠️`,
