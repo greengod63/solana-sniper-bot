@@ -50,6 +50,51 @@ export async function callbackQueryHandler(
           },
         });
       break;
+    case "SNIPE_FEE": //Snipe fee Button
+        await bot.sendMessage(chatId, BotCaption.SET_PRIORITY_FEE, {
+          parse_mode: "HTML",
+          reply_markup: {
+            force_reply: true,
+            selective: true
+          },
+        });
+      break;
+    case "SNIPE_TIP": //Snipe tip Button
+        await bot.sendMessage(chatId, BotCaption.SET_JITOTIP, {
+          parse_mode: "HTML",
+          reply_markup: {
+            force_reply: true,
+            selective: true
+          },
+        });
+      break;
+    case "SLIPPAGE": //Slippage Button
+        await bot.sendMessage(chatId, BotCaption.SET_SLIPPAGE, {
+          parse_mode: "HTML",
+          reply_markup: {
+            force_reply: true,
+            selective: true
+          },
+        });
+      break;
+    case "TP": //TP Button
+        await bot.sendMessage(chatId, BotCaption.SET_TakeProfit, {
+          parse_mode: "HTML",
+          reply_markup: {
+            force_reply: true,
+            selective: true
+          },
+        });
+      break;
+    case "SL": //SL Button
+        await bot.sendMessage(chatId, BotCaption.SET_StopLoss, {
+          parse_mode: "HTML",
+          reply_markup: {
+            force_reply: true,
+            selective: true
+          },
+        });
+      break;
     default:
       break;
   }
