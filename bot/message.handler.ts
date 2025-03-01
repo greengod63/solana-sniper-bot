@@ -26,6 +26,8 @@ export async function messageHandler(
       
       const regex = /^[0-9]+(\.[0-9]+)?$/;
       const isNumber = regex.test(msg.text) === true;
+
+      console.log("isNumber------------>,", isNumber, text);
       const reply_message_id = reply_to_message.message_id;
 
       switch (text) {
@@ -52,6 +54,21 @@ export async function messageHandler(
               },
             });
             return;
+          }
+          break;
+        case BotCaption.SET_PRIORITY_FEE.replace(/<[^>]*>/g, ""):
+          console.log("priority fee");
+          if (isNumber) {
+            const snipe_config = userSnipeConfig.get(chatId);
+            const updated_config = {...snipe_config, snipe_fee: parseFloat(msg.text)}
+            console.log("Message snipe_config: ", updated_config);
+            userSnipeConfig.set(chatId, updated_config);
+            // snipe_config.snipe_fee = parseFloat(msg.text);
+            const IK_SNIPE = getIKSnipe(updated_config);
+            sendIKSnipe(bot, chatId, IK_SNIPE);
+          } else {
+            await bot.deleteMessage(chatId, msg.message_id);
+            await bot.deleteMessage(chatId, reply_message_id);
           }
       }
     } else {
