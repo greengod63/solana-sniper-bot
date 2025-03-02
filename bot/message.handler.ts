@@ -136,6 +136,22 @@ export async function messageHandler(
             await bot.sendMessage(chatId, BotCaption.strInvalidInput);
           }
           break;
+        case BotCaption.SET_SNIPE_AMOUNT.replace(/<[^>]*>/g, ""):
+          console.log("snipe amount");
+          if (isNumber) {
+            const snipe_config = userSnipeConfig.get(chatId);
+            const updated_config = {...snipe_config, snipe_amount: parseFloat(msg.text)}
+            console.log("Message snipe_config: ", updated_config);
+            userSnipeConfig.set(chatId, updated_config);
+            const IK_SNIPE = getIKSnipe(updated_config);
+            sendIKSnipe(bot, chatId, IK_SNIPE);
+          } else {
+            await bot.deleteMessage(chatId, msg.message_id);
+            await bot.deleteMessage(chatId, reply_message_id);
+
+            await bot.sendMessage(chatId, BotCaption.strInvalidInput);
+          }
+          break;
         
       }
     } else {
