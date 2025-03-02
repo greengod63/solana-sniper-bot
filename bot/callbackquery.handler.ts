@@ -31,10 +31,10 @@ export async function callbackQueryHandler(
   }
 
   switch (cb_query_cmd.split("-")[0]) {
-    case "SNIPE": // Snipe Button
+    case "SNIPE_SETTINGS": // Snipe Button
       const snipe_config = userSnipeConfig.get(chatId);
       console.log("Callback snipe_config: ", snipe_config);
-      
+
       const IK_SNIPE = getIKSnipe(snipe_config);
       sendIKSnipe(bot, chatId, IK_SNIPE);
       break;
@@ -42,58 +42,72 @@ export async function callbackQueryHandler(
       bot.deleteMessage(chatId, messageId);
       return;
     case "TOKEN": //Token Button
-        await bot.sendMessage(chatId, BotCaption.strInputTokenAddress, {
-          parse_mode: "HTML",
-          reply_markup: {
-            force_reply: true,
-            selective: true
-          },
-        });
+      await bot.sendMessage(chatId, BotCaption.strInputTokenAddress, {
+        parse_mode: "HTML",
+        reply_markup: {
+          force_reply: true,
+          selective: true,
+        },
+      });
       break;
     case "SNIPE_FEE": //Snipe fee Button
-        await bot.sendMessage(chatId, BotCaption.SET_PRIORITY_FEE, {
-          parse_mode: "HTML",
-          reply_markup: {
-            force_reply: true,
-            selective: true
-          },
-        });
+      await bot.sendMessage(chatId, BotCaption.SET_PRIORITY_FEE, {
+        parse_mode: "HTML",
+        reply_markup: {
+          force_reply: true,
+          selective: true,
+        },
+      });
       break;
     case "SNIPE_TIP": //Snipe tip Button
-        await bot.sendMessage(chatId, BotCaption.SET_JITOTIP, {
-          parse_mode: "HTML",
-          reply_markup: {
-            force_reply: true,
-            selective: true
-          },
-        });
+      await bot.sendMessage(chatId, BotCaption.SET_JITOTIP, {
+        parse_mode: "HTML",
+        reply_markup: {
+          force_reply: true,
+          selective: true,
+        },
+      });
       break;
     case "SLIPPAGE": //Slippage Button
-        await bot.sendMessage(chatId, BotCaption.SET_SLIPPAGE, {
-          parse_mode: "HTML",
-          reply_markup: {
-            force_reply: true,
-            selective: true
-          },
-        });
+      await bot.sendMessage(chatId, BotCaption.SET_SLIPPAGE, {
+        parse_mode: "HTML",
+        reply_markup: {
+          force_reply: true,
+          selective: true,
+        },
+      });
       break;
     case "TP": //TP Button
-        await bot.sendMessage(chatId, BotCaption.SET_TakeProfit, {
-          parse_mode: "HTML",
-          reply_markup: {
-            force_reply: true,
-            selective: true
-          },
-        });
+      await bot.sendMessage(chatId, BotCaption.SET_TakeProfit, {
+        parse_mode: "HTML",
+        reply_markup: {
+          force_reply: true,
+          selective: true,
+        },
+      });
       break;
     case "SL": //SL Button
-        await bot.sendMessage(chatId, BotCaption.SET_StopLoss, {
-          parse_mode: "HTML",
-          reply_markup: {
-            force_reply: true,
-            selective: true
-          },
-        });
+      await bot.sendMessage(chatId, BotCaption.SET_StopLoss, {
+        parse_mode: "HTML",
+        reply_markup: {
+          force_reply: true,
+          selective: true,
+        },
+      });
+      break;
+    case "SNIPE": //SL Button
+      const amount = cb_query_cmd.split("-")[1];
+      if (amount == "0.2" || amount == "0.5" || amount == "1") {
+        const snipe_config = userSnipeConfig.get(chatId);
+        const updated_config = {
+          ...snipe_config,
+          snipe_amount: parseFloat(amount),
+        };
+        console.log("Message snipe_config: ", updated_config);
+        userSnipeConfig.set(chatId, updated_config);
+        const IK_SNIPE = getIKSnipe(updated_config);
+        sendIKSnipe(bot, chatId, IK_SNIPE);
+      }
       break;
     default:
       break;
