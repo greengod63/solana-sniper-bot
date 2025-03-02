@@ -107,6 +107,14 @@ export async function callbackQueryHandler(
         userSnipeConfig.set(chatId, updated_config);
         const IK_SNIPE = getIKSnipe(updated_config);
         sendIKSnipe(bot, chatId, IK_SNIPE);
+      } else {
+        await bot.sendMessage(chatId, BotCaption.SET_SNIPE_AMOUNT, {
+          parse_mode: "HTML",
+          reply_markup: {
+            force_reply: true,
+            selective: true,
+          },
+        });
       }
       break;
     default:
