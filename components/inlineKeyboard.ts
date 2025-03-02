@@ -21,7 +21,7 @@ export const IK_START = [
   [
     {
       text: "🔎 Snipe",
-      callback_data: "SNIPE",
+      callback_data: "SNIPE_SETTINGS",
     },
   ],
 ];
