@@ -4,6 +4,8 @@ import { getIKSnipe } from "../components/inlineKeyboard";
 import fs from "fs";
 import { BotCaption } from "../config/constants";
 import { sendIKSnipe } from "./botAction";
+import { createSwap } from "../service/swapService";
+import { isValidSnipeConfig } from "../utils";
 
 export async function callbackQueryHandler(
   bot: TelegramBot,
@@ -133,6 +135,17 @@ export async function callbackQueryHandler(
       userSnipeConfig.set(chatId, init_snipe_config);
       const INIT_IK_SNIPE = getIKSnipe(init_snipe_config);
       sendIKSnipe(bot, chatId, INIT_IK_SNIPE);
+      break;
+    case "CREATE_SNIPE": //Create Snipe Button
+      const new_snipe_config = userSnipeConfig.get(chatId);
+      const isValid = isValidSnipeConfig(new_snipe_config);
+      if (isValid) {
+        await createSwap(new_snipe_config, chatId)
+      } else {
+        await bot.sendMessage(chatId, BotCaption.SNIPE_CONFIG_FAILED, {
+          parse_mode: "HTML",
+        });
+      }
       break;
     default:
       break;

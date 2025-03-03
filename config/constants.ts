@@ -15,6 +15,7 @@ export enum BotCaption {
   SET_PK = `🔑 Private KEY \n\n<i>💲 Enter Wallet Private KEY</i>`,
   SET_DES = `⚙ User Setting.\nYou can set any settings on here. You can set any settings on here.`,
   SWAP_FAILED = `⚠️ Swap Failed ⚠️`,
+  SNIPE_CONFIG_FAILED = `⚠️ Snipe Configuration Failed ⚠️`,
   AUTO_SWAP_ON = "🔔 Auto Swap ON",
   AUTO_SWAP_OFF = "🔕 Auto Swap OFF",
   strAlreadyRefer = `👍 You have already referred a friend.`,

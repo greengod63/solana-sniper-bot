@@ -19,5 +19,21 @@ export const getShortenedCA = (ca: string) => {
   // Get the last 6 letters
   const lastSixLetters = ca.slice(-6);
 
-  return firstSixLetters+"..."+lastSixLetters;
+  return firstSixLetters + "..." + lastSixLetters;
+};
+
+export const isValidSnipeConfig = (snipe_config: any) => {
+  if (
+    snipe_config.token != null &&
+    snipe_config.slippage > 0.0 &&
+    snipe_config.snipe_fee > 0.0 &&
+    snipe_config.snipe_tip > 0.0 &&
+    snipe_config.tp != null &&
+    snipe_config.sl != null &&
+    snipe_config.snipe_amount != null
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
