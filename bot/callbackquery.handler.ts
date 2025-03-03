@@ -95,7 +95,7 @@ export async function callbackQueryHandler(
         },
       });
       break;
-    case "SNIPE": //SL Button
+    case "SNIPE": //Snipe-[x] Button
       const amount = cb_query_cmd.split("-")[1];
       if (amount == "0.2" || amount == "0.5" || amount == "1") {
         const snipe_config = userSnipeConfig.get(chatId);
@@ -116,6 +116,23 @@ export async function callbackQueryHandler(
           },
         });
       }
+      break;
+    case "REFRESH": //Refresh Button
+      // Snipe Config Init
+      const init_snipe_config: any = {
+        token: null,
+        slippage: 50,
+        snipe_fee: 0.005,
+        snipe_tip: 0.005,
+        tp: null,
+        sl: null,
+        snipe_amount: null,
+      };
+
+      console.log("Message snipe_config Refresh: ", init_snipe_config);
+      userSnipeConfig.set(chatId, init_snipe_config);
+      const INIT_IK_SNIPE = getIKSnipe(init_snipe_config);
+      sendIKSnipe(bot, chatId, INIT_IK_SNIPE);
       break;
     default:
       break;
