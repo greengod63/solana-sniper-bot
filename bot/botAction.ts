@@ -1,9 +1,18 @@
-import TelegramBot from 'node-telegram-bot-api';
-import fs from 'fs';
+import TelegramBot from "node-telegram-bot-api";
+import fs from "fs";
 
-export async function sendIKSnipe(bot: TelegramBot, chatId: number, IK_SNIPE: any) {
+export async function sendIKSnipe(
+  bot: TelegramBot,
+  chatId: number,
+  IK_SNIPE: any,
+  caption?: string
+) {
   const image = fs.createReadStream("./public/sniper.jpg");
-  const caption = `⬇You can create a new snipe or check current active snipes!🔍`;
+
+  if (!caption) {
+    caption = `⬇You can create a new snipe or check current active snipes!🔍`;
+  }
+  
   await bot.sendPhoto(chatId, image, {
     parse_mode: "HTML",
     caption: caption,

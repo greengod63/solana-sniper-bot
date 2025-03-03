@@ -4,7 +4,7 @@ import { isValidSolanaAddress } from "../utils";
 import { BotCaption } from "../config/constants";
 import { getIKSnipe } from "../components/inlineKeyboard";
 import { sendIKSnipe } from "./botAction";
-
+import { getTokenInformation } from "../service/birdeyeService";
 
 export async function messageHandler(
   bot: TelegramBot,
@@ -23,7 +23,7 @@ export async function messageHandler(
     const { reply_to_message } = msg;
     if (reply_to_message && reply_to_message.text) {
       const { text } = reply_to_message;
-      
+
       const regex = /^[0-9]+(\.[0-9]+)?$/;
       const isNumber = regex.test(msg.text) === true;
 
@@ -37,7 +37,7 @@ export async function messageHandler(
           if (isCA) {
             const snipe_config = userSnipeConfig.get(chatId);
             console.log("Message snipe_config: ", snipe_config);
-            const updated_config = {...snipe_config, token: msg.text}
+            const updated_config = { ...snipe_config, token: msg.text };
             userSnipeConfig.set(chatId, updated_config);
             // snipe_config.token = msg.text;
             const IK_SNIPE = getIKSnipe(updated_config);
@@ -46,13 +46,17 @@ export async function messageHandler(
             await bot.deleteMessage(chatId, msg.message_id);
             await bot.deleteMessage(chatId, reply_message_id);
 
-            await bot.sendMessage(chatId, BotCaption.strInvalidSolanaTokenAddress, {
-              parse_mode: "HTML",
-              reply_markup: {
-                force_reply: true,
-                selective: true,
-              },
-            });
+            await bot.sendMessage(
+              chatId,
+              BotCaption.strInvalidSolanaTokenAddress,
+              {
+                parse_mode: "HTML",
+                reply_markup: {
+                  force_reply: true,
+                  selective: true,
+                },
+              }
+            );
             return;
           }
           break;
@@ -60,7 +64,10 @@ export async function messageHandler(
           console.log("priority fee");
           if (isNumber) {
             const snipe_config = userSnipeConfig.get(chatId);
-            const updated_config = {...snipe_config, snipe_fee: parseFloat(msg.text)}
+            const updated_config = {
+              ...snipe_config,
+              snipe_fee: parseFloat(msg.text),
+            };
             console.log("Message snipe_config: ", updated_config);
             userSnipeConfig.set(chatId, updated_config);
             const IK_SNIPE = getIKSnipe(updated_config);
@@ -76,7 +83,10 @@ export async function messageHandler(
           console.log("jito tip");
           if (isNumber) {
             const snipe_config = userSnipeConfig.get(chatId);
-            const updated_config = {...snipe_config, snipe_tip: parseFloat(msg.text)}
+            const updated_config = {
+              ...snipe_config,
+              snipe_tip: parseFloat(msg.text),
+            };
             console.log("Message snipe_config: ", updated_config);
             userSnipeConfig.set(chatId, updated_config);
             const IK_SNIPE = getIKSnipe(updated_config);
@@ -92,7 +102,10 @@ export async function messageHandler(
           console.log("slippage");
           if (isNumber) {
             const snipe_config = userSnipeConfig.get(chatId);
-            const updated_config = {...snipe_config, slippage: parseFloat(msg.text)}
+            const updated_config = {
+              ...snipe_config,
+              slippage: parseFloat(msg.text),
+            };
             console.log("Message snipe_config: ", updated_config);
             userSnipeConfig.set(chatId, updated_config);
             const IK_SNIPE = getIKSnipe(updated_config);
@@ -108,7 +121,10 @@ export async function messageHandler(
           console.log("take profit");
           if (isNumber) {
             const snipe_config = userSnipeConfig.get(chatId);
-            const updated_config = {...snipe_config, tp: parseFloat(msg.text)}
+            const updated_config = {
+              ...snipe_config,
+              tp: parseFloat(msg.text),
+            };
             console.log("Message snipe_config: ", updated_config);
             userSnipeConfig.set(chatId, updated_config);
             const IK_SNIPE = getIKSnipe(updated_config);
@@ -124,7 +140,10 @@ export async function messageHandler(
           console.log("priority fee");
           if (isNumber) {
             const snipe_config = userSnipeConfig.get(chatId);
-            const updated_config = {...snipe_config, sl: parseFloat(msg.text)}
+            const updated_config = {
+              ...snipe_config,
+              sl: parseFloat(msg.text),
+            };
             console.log("Message snipe_config: ", updated_config);
             userSnipeConfig.set(chatId, updated_config);
             const IK_SNIPE = getIKSnipe(updated_config);
@@ -140,7 +159,10 @@ export async function messageHandler(
           console.log("snipe amount");
           if (isNumber) {
             const snipe_config = userSnipeConfig.get(chatId);
-            const updated_config = {...snipe_config, snipe_amount: parseFloat(msg.text)}
+            const updated_config = {
+              ...snipe_config,
+              snipe_amount: parseFloat(msg.text),
+            };
             console.log("Message snipe_config: ", updated_config);
             userSnipeConfig.set(chatId, updated_config);
             const IK_SNIPE = getIKSnipe(updated_config);
@@ -152,12 +174,21 @@ export async function messageHandler(
             await bot.sendMessage(chatId, BotCaption.strInvalidInput);
           }
           break;
-        
       }
     } else {
       const isCA = await isValidSolanaAddress(msg.text);
       if (isCA) {
-        console.log("CA------------->", msg.text);
+        const tokenInfo = await getTokenInformation(msg.text);
+        
+        const caption = `Name (Symbol): ${tokenInfo.name} (${tokenInfo.symbol})\nPrice: ${tokenInfo.price}\nMarketCap: ${tokenInfo.marketCap}`;
+
+        const snipe_config = userSnipeConfig.get(chatId);
+        console.log("Message snipe_config: ", snipe_config);
+        const updated_config = { ...snipe_config, token: msg.text };
+        userSnipeConfig.set(chatId, updated_config);
+        // snipe_config.token = msg.text;
+        const IK_SNIPE = getIKSnipe(updated_config);
+        sendIKSnipe(bot, chatId, IK_SNIPE, caption);
       } else {
         return;
       }
