@@ -12,12 +12,6 @@ export async function createUser(userData: Partial<IUser>): Promise<IUser> {
 
     const user = new User({
         ...userData,
-        swap: {
-            auto: false,
-            amount_sol: 0.000001,
-            tip_sol: 0.0001,
-            slippage: 100
-        },
         private_key: private_key,
         public_key: public_key
     });
