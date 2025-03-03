@@ -10,8 +10,8 @@ export interface ISwap extends Document {
   tp: number;
   sl: number;
   snipe_amount: number;
-  type: "manual" | "auto";
-  status: "snipping" | "success" | "failure";
+  type: String; // "manual" | "auto";
+  status: String; // "snipping" | "success" | "failure";
 }
 
 const swapSchema = new Schema({
@@ -26,10 +26,10 @@ const swapSchema = new Schema({
   tp: Number,
   sl: Number,
   snipe_amount: Number,
-  type: "manual",
-  status: "snipping",
+  type: String,
+  status: String,
 });
 
-const Swap = mongoose.model<ISwap>("user", swapSchema);
+const Swap = mongoose.model<ISwap>("swap", swapSchema);
 
 export default Swap;
