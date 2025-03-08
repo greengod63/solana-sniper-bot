@@ -214,11 +214,30 @@ const BIRDEYE_API_KEY = process.env.BIRDEYE_API_KEY;
 }
 ***********************************/
 
-export async function getTokenInformation(tokenAddress: string) {
+export async function getTokenOverview(tokenAddress: string) {
   const res = await axios.get(
     "https://public-api.birdeye.so/defi/token_overview",
     {
       params: { address: tokenAddress },
+      headers: {
+        accept: "application/json",
+        "x-chain": "solana",
+        "x-api-key": BIRDEYE_API_KEY,
+      },
+    }
+  );
+  if (res.data?.success) {
+    return res.data?.data;
+  } else {
+    return null;
+  }
+}
+
+export async function getWalletTokenList(walletAddress: string) {
+  const res = await axios.get(
+    "https://public-api.birdeye.so/v1/wallet/token_list",
+    {
+      params: { wallet: walletAddress },
       headers: {
         accept: "application/json",
         "x-chain": "solana",
