@@ -5,7 +5,7 @@ import fs from "fs";
 import { BotCaption } from "../config/constants";
 import { sendIKSnipe } from "./botAction";
 import { createSwap } from "../service/swapService";
-import { isValidSnipeConfig } from "../utils";
+import { isValidSnipeConfig } from "../utils/utils";
 
 export async function callbackQueryHandler(
   bot: TelegramBot,
