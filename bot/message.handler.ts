@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
 import { hasUser } from "../service/userService";
-import { isValidSolanaAddress } from "../utils";
+import { isValidSolanaAddress } from "../utils/utils";
 import { BotCaption } from "../config/constants";
 import { getIKSnipe } from "../components/inlineKeyboard";
 import { sendIKSnipe } from "./botAction";

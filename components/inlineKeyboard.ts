@@ -1,4 +1,4 @@
-import { getShortenedCA } from "../utils";
+import { getShortenedCA } from "../utils/utils";
 
 // Start Inline Keyboard
 export const IK_START = [
