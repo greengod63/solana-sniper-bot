@@ -4,7 +4,7 @@ import { isValidSolanaAddress } from "../utils";
 import { BotCaption } from "../config/constants";
 import { getIKSnipe } from "../components/inlineKeyboard";
 import { sendIKSnipe } from "./botAction";
-import { getTokenInformation } from "../service/birdeyeService";
+import { getTokenOverview } from "../service/birdeyeService";
 
 export async function messageHandler(
   bot: TelegramBot,
@@ -178,7 +178,7 @@ export async function messageHandler(
     } else {
       const isCA = await isValidSolanaAddress(msg.text);
       if (isCA) {
-        const tokenInfo = await getTokenInformation(msg.text);
+        const tokenInfo = await getTokenOverview(msg.text);
         
         const caption = `Name (Symbol): ${tokenInfo.name} (${tokenInfo.symbol})\nPrice: ${tokenInfo.price}\nMarketCap: ${tokenInfo.marketCap}`;
 
