@@ -28,3 +28,40 @@ export const getSolBalance = async (walletAddress: string) => {
 
   return balance / 1e9;
 };
+
+export const tansferSOL = async (
+  senderPrivateKeyString: string,
+  receiverPublicKeyString: string,
+  amount: number
+) => {
+  const senderSecretKey = bs58.decode(senderPrivateKeyString);
+  const sender = Keypair.fromSecretKey(senderSecretKey);
+
+  // Get receiver public key
+  const receiverPublicKey = new PublicKey(receiverPublicKeyString);
+
+  try {
+    const trasnferInstruction = SystemProgram.transfer({
+      fromPubkey: sender.publicKey,
+      toPubkey: receiverPublicKey,
+      lamports: amount * 1e9,
+    });
+
+    const transaction = new Transaction().add(trasnferInstruction);
+
+    const transactionSignature = await sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [sender]
+    );
+
+    console.log(
+      "Transaction Signature: ",
+      `https://solscan.io/tx/${transactionSignature}`
+    );
+    return { status: "success", tx_hash: transactionSignature };
+  } catch (error: any) {
+    console.error("❌ Transfer SOL error", error.message);
+    return { status: "failed", tx_hash: null };
+  }
+};
