@@ -29,6 +29,23 @@ export const getSolBalance = async (walletAddress: string) => {
   return balance / 1e9;
 };
 
+export const getTokenInfo_Decimals_Supply = async (tokenAddress: string) => {
+  const tokenInfo = await connection.getParsedAccountInfo(
+    new PublicKey(tokenAddress)
+  );
+  // console.log("tokenInfo------>", JSON.stringify(tokenInfo, null, 2));
+  const splData = tokenInfo.value?.data;
+  if (splData && "parsed" in splData) {
+    const parsed = splData.parsed;
+    // console.log("Parsed----->", JSON.stringify(parsed.info, null, 2))
+    const decimals = parsed.info.decimals;
+    const supply = parsed.info.supply;
+    console.log("Parsed----->", decimals, supply);
+
+    return { decimals: decimals, supply: supply };
+  }
+};
+
 export const tansferSOL = async (
   senderPrivateKeyString: string,
   receiverPublicKeyString: string,

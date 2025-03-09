@@ -1,3 +1,5 @@
+export const BOT_FEE_PERCENT = 1; // 1%
+
 export enum BotCaption {
   strInputTokenAddress = `💰 Enter Token Address`,
   strInvalidSolanaTokenAddress = `⚠️ Invalid Solana Token Address! Again enter correct Token Address!`,
