@@ -206,7 +206,7 @@ async function executeSwap(
   }
 }
 
-async function sellToken(
+export async function sellToken(
   chatId: number,
   private_key: string,
   amountInToken: number,
@@ -283,5 +283,3 @@ async function sellToken(
     return { status: "failed", tx_hash: null };
   }
 }
-
-module.exports = sellToken;
