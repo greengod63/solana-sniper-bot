@@ -12,7 +12,7 @@ import {
 import bs58 from "bs58";
 // import { createSwap } from "../service/swap.service";
 import { getTokenOverview } from "../service/birdeyeService";
-import { getTokenInfo_Decimals_Supply } from "../utils/web3";
+import { getTokenInfo_Decimals_Supply, getTokenPrice } from "../utils/web3";
 import dotenv from "dotenv";
 import { BOT_FEE_PERCENT } from "../config/constants";
 
@@ -44,7 +44,7 @@ async function getJupiterSwapRoute(
       console.log(quoteResponse);
 
       return quoteResponse;
-    } catch (error:any) {
+    } catch (error: any) {
       console.error(`❌ Swap Route Error: ${error.message}`);
       retries--;
       if (retries === 0) process.exit(1);
@@ -54,10 +54,10 @@ async function getJupiterSwapRoute(
   }
 }
 
-function deserializeInstruction(instruction:any) {
+function deserializeInstruction(instruction: any) {
   return new TransactionInstruction({
     programId: new PublicKey(instruction.programId),
-    keys: instruction.accounts.map((key:any) => ({
+    keys: instruction.accounts.map((key: any) => ({
       pubkey: new PublicKey(key.pubkey),
       isSigner: key.isSigner,
       isWritable: key.isWritable,
@@ -69,13 +69,13 @@ function deserializeInstruction(instruction:any) {
 // ✅ **Execute Swap Transaction**
 async function executeSwap(
   routeData: any,
-  ownerAddress:string,
-  wallet:Keypair,
-  gasFee:number,
-  tokenAddress:string,
-  chatId:number,
-  amountInToken:number,
-  botFeeSOL:number
+  ownerAddress: string,
+  wallet: Keypair,
+  gasFee: number,
+  tokenAddress: string,
+  chatId: number,
+  amountInToken: number,
+  botFeeSOL: number
 ) {
   try {
     const instructions = (
@@ -104,7 +104,9 @@ async function executeSwap(
       addressLookupTableAddresses, // The lookup table addresses that you can use if you are using versioned transaction.
     } = instructions;
 
-    const getAddressLookupTableAccounts = async (keys: string[]): Promise<AddressLookupTableAccount[]> => {
+    const getAddressLookupTableAccounts = async (
+      keys: string[]
+    ): Promise<AddressLookupTableAccount[]> => {
       const addressLookupTableAccountInfos =
         await connection.getMultipleAccountsInfo(
           keys.map((key) => new PublicKey(key))
@@ -198,19 +200,19 @@ async function executeSwap(
     console.log(`✅ Swap Submitted! Transaction ID: ${txid}`);
     console.log(`🔗 View on SolScan: https://solscan.io/tx/${txid}`);
     return { status: "success", tx_hash: txid, amount: sol_amount };
-  } catch (error) {
+  } catch (error: any) {
     console.error(`❌ Swap Execution Failed: ${error.message}`);
     return { status: "failed", tx_hash: null };
   }
 }
 
 async function sellToken(
-  chatId,
-  private_key,
-  amountInToken,
-  tokenAddress,
-  gasFee,
-  slippage
+  chatId: number,
+  private_key: string,
+  amountInToken: number,
+  tokenAddress: string,
+  gasFee: number,
+  slippage: number
 ) {
   try {
     let privateKeyString = private_key;
@@ -218,13 +220,13 @@ async function sellToken(
     // ✅ Decode and Validate Base58 Private Key
     let privateKey;
     try {
-      privateKey = bs58.default.decode(privateKeyString);
+      privateKey = bs58.decode(privateKeyString);
       if (privateKey.length !== 64) {
         throw new Error(
           `❌ Invalid private key length! Expected 64 bytes but got ${privateKey.length}.`
         );
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(`❌ Failed to decode private key: ${e.message}`);
       return { status: "failed", tx_hash: null };
     }
@@ -255,7 +257,7 @@ async function sellToken(
 
     // Get Decimals and Supply
     const tokenInfo = await getTokenInfo_Decimals_Supply(tokenAddress);
-    const decimals = tokenInfo.decimals;
+    const decimals = tokenInfo?.decimals;
 
     // ✅ **Execute Swap Process**
     const swapRoute = await getJupiterSwapRoute(
@@ -276,7 +278,7 @@ async function sellToken(
       botFeeSOL
     );
     return result;
-  } catch (error) {
+  } catch (error: any) {
     console.error(`❌ Error: ${error.message}`);
     return { status: "failed", tx_hash: null };
   }
