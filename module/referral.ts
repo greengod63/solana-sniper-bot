@@ -1,14 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 // Define the interface for the Tier structure
-interface ITier {
+export interface ITier {
   users: number;
   volume: number;
   earnings: number;
 }
 
 // Define the interface for the Referral document
-interface IReferral extends Document {
+export interface IReferral extends Document {
   chat_id: number;
   parent_id?: number;
   rewards_wallet?: string;
@@ -41,6 +41,6 @@ const ReferralSchema: Schema = new Schema({
 });
 
 // Create the model
-const ReferralModel = mongoose.model<IReferral>('Referral', ReferralSchema);
+const Referral = mongoose.model<IReferral>('Referral', ReferralSchema);
 
-export default ReferralModel;
+export default Referral;

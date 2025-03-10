@@ -1,10 +1,10 @@
 import TelegramBot from "node-telegram-bot-api";
-import { hasUser, createUser } from "../service/userService";
+import { getUserById, addUser } from "../service/userService";
 import { getIKSnipe } from "../components/inlineKeyboard";
 import fs from "fs";
 import { BotCaption } from "../config/constants";
 import { sendIKSnipe } from "./botAction";
-import { createSwap } from "../service/swapService";
+import { addSwap } from "../service/swapService";
 import { isValidSnipeConfig } from "../utils/utils";
 
 export async function callbackQueryHandler(
@@ -18,13 +18,13 @@ export async function callbackQueryHandler(
   if (!cb_query_cmd || !chatId) return;
 
   let user;
-  const existingUser = await hasUser(chatId);
+  const existingUser = await getUserById(chatId);
   if (existingUser) {
     console.log("User already exist: ", chatId);
     user = existingUser;
   } else {
     console.log("New User: ", chatId);
-    user = await createUser({
+    user = await addUser({
       userid: chatId,
       username: cb_query.from.username,
       first_name: cb_query.from.first_name,
@@ -140,7 +140,7 @@ export async function callbackQueryHandler(
       const new_snipe_config = userSnipeConfig.get(chatId);
       const isValid = isValidSnipeConfig(new_snipe_config);
       if (isValid) {
-        await createSwap(new_snipe_config, chatId)
+        await addSwap(new_snipe_config, chatId)
       } else {
         await bot.sendMessage(chatId, BotCaption.SNIPE_CONFIG_FAILED, {
           parse_mode: "HTML",

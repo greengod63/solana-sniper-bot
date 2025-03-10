@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 // Define the interface for the User document
 export interface ISwap extends Document {
-  userid: number;
+  chat_id: number;
   token: string;
   slippage: number;
   snipe_fee: number;
@@ -12,10 +12,11 @@ export interface ISwap extends Document {
   snipe_amount: number;
   type: String; // "manual" | "auto";
   status: String; // "snipping" | "success" | "failure";
+  swap_time: number;
 }
 
 const swapSchema = new Schema({
-  userid: {
+  chat_id: {
     type: Number,
     required: true,
   },
@@ -28,6 +29,7 @@ const swapSchema = new Schema({
   snipe_amount: Number,
   type: String,
   status: String,
+  swap_time: Number
 });
 
 const Swap = mongoose.model<ISwap>("swap", swapSchema);

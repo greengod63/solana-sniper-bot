@@ -2,7 +2,7 @@ import mongoose, {Schema, Document} from "mongoose";
 
 // Define the interface for the User document
 export interface IUser extends Document {
-    userid: number;
+    chat_id: number;
     username?: string;
     first_name?: string;
     last_name?: string;
@@ -11,7 +11,7 @@ export interface IUser extends Document {
 }
 
 const userSchema = new Schema({
-    userid: {
+    chat_id: {
         type: Number,
         required: true,
         unique: true
