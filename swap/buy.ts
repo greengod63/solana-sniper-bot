@@ -10,7 +10,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import bs58 from "bs58";
-// import { createSwap } from "../service/swap.service";
+// import { addSwap } from "../service/swap.service";
 import { getTokenOverview } from "../service/birdeyeService";
 import { getTokenInfo_Decimals_Supply } from "../utils/web3";
 import dotenv from "dotenv";
@@ -193,7 +193,7 @@ async function executeSwap(
       parseFloat(routeData.outAmount) / Math.pow(10, tokenInfo?.decimals);
     const token_price = parseFloat(routeData.swapUsdValue) / token_amount;
 
-    // await createSwap({
+    // await addSwap({
     //   chat_id: chatId,
     //   token_mint_address: tokenAddress,
     //   tx_hash: txid,

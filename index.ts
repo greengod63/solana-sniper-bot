@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
 import { connectDatabase } from "./config/db";
-import { createUser, hasUser } from "./service/userService";
+import { addUser, getUserById } from "./service/userService";
 import { IK_START, getIKSnipe } from "./components/inlineKeyboard";
 import { messageHandler } from "./bot/message.handler";
 import { callbackQueryHandler } from "./bot/callbackquery.handler";
@@ -52,7 +52,7 @@ const startBot = () => {
 
     const chatId = msg.chat.id;
     let user;
-    const existingUser = await hasUser(chatId);
+    const existingUser = await getUserById(chatId);
     if (existingUser) {
       console.log("User already exist: ", chatId);
       user = existingUser;
@@ -61,8 +61,8 @@ const startBot = () => {
       console.log("New User: ", chatId);
 
       const userChat = msg.chat;
-      user = await createUser({
-        userid: userChat.id,
+      user = await addUser({
+        chat_id: userChat.id,
         username: userChat.username,
         first_name: userChat.first_name,
         last_name: userChat.last_name

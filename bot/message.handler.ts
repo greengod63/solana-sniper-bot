@@ -1,5 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
-import { hasUser } from "../service/userService";
+import { getUserById } from "../service/userService";
 import { isValidSolanaAddress } from "../utils/utils";
 import { BotCaption } from "../config/constants";
 import { getIKSnipe } from "../components/inlineKeyboard";
@@ -15,7 +15,7 @@ export async function messageHandler(
     if (!msg.text) return;
 
     const chatId = msg.chat.id;
-    const existingUser = await hasUser(chatId);
+    const existingUser = await getUserById(chatId);
     if (!existingUser) {
       return;
     }
