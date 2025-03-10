@@ -25,7 +25,7 @@ export async function callbackQueryHandler(
   } else {
     console.log("New User: ", chatId);
     user = await addUser({
-      userid: chatId,
+      chat_id: chatId,
       username: cb_query.from.username,
       first_name: cb_query.from.first_name,
       last_name: cb_query.from.last_name,
