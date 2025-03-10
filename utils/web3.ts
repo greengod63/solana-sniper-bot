@@ -82,3 +82,14 @@ export const tansferSOL = async (
     return { status: "failed", tx_hash: null };
   }
 };
+
+export const getTokenPrice = async (tokenAddressArray: string[]) => {
+  const mergedMintAddresses = tokenAddressArray.join(",");
+  const solAddress = "So11111111111111111111111111111111111111112";
+  const priceResponseShowExtraInfo = await fetch(
+    `https://api.jup.ag/price/v2?ids=${solAddress},${mergedMintAddresses}`
+  );
+  // const priceResponseShowExtraInfo = await fetch(`https://api.jup.ag/price/v2?ids=${mergedMintAddresses}&showExtraInfo=true`);
+  const priceDataShowExtraInfo = await priceResponseShowExtraInfo.json();
+  return priceDataShowExtraInfo;
+};
