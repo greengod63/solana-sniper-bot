@@ -6,6 +6,7 @@ import { BotCaption } from "../config/constants";
 import { sendIKSnipe } from "./botAction";
 import { addSwap } from "../service/swapService";
 import { isValidSnipeConfig } from "../utils/utils";
+import buyToken from "../swap/buy";
 
 export async function callbackQueryHandler(
   bot: TelegramBot,
@@ -137,10 +138,29 @@ export async function callbackQueryHandler(
       sendIKSnipe(bot, chatId, INIT_IK_SNIPE);
       break;
     case "CREATE_SNIPE": //Create Snipe Button
-      const new_snipe_config = userSnipeConfig.get(chatId);
-      const isValid = isValidSnipeConfig(new_snipe_config);
+      const completed_snipe_config = userSnipeConfig.get(chatId);
+      const isValid = isValidSnipeConfig(completed_snipe_config);
       if (isValid) {
-        await addSwap(new_snipe_config, chatId)
+        // buyToken
+        const result = await buyToken(
+          chatId,
+          user.private_key,
+          completed_snipe_config.token,
+          completed_snipe_config.snipe_amount,
+          completed_snipe_config.snipe_fee,
+          completed_snipe_config.slippage
+        );
+        if (result && result.status == "success") {
+          await bot.sendMessage(
+            chatId,
+            `Success Buy Token!🎉\nTxID: <code>${result.tx_hash}</code>`,
+            { parse_mode: "HTML" }
+          );
+          // await updateTiersVolume(chatId, result.amount);
+        } else {
+          await bot.sendMessage(chatId, "Failed Buy Token!");
+        }
+        await addSwap(completed_snipe_config, chatId);
       } else {
         await bot.sendMessage(chatId, BotCaption.SNIPE_CONFIG_FAILED, {
           parse_mode: "HTML",

@@ -216,7 +216,7 @@ async function executeSwap(
   }
 }
 
-export async function buyToken(
+async function buyToken(
   chatId: number,
   private_key: string,
   amountInSol: number,
@@ -288,3 +288,5 @@ export async function buyToken(
     process.exit(1);
   }
 }
+
+export default buyToken;
