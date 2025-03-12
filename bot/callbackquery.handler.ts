@@ -145,8 +145,8 @@ export async function callbackQueryHandler(
         const result = await buyToken(
           chatId,
           user.private_key,
-          completed_snipe_config.token,
           completed_snipe_config.snipe_amount,
+          completed_snipe_config.token,
           completed_snipe_config.snipe_fee,
           completed_snipe_config.slippage
         );
